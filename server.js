@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 // Connect to DB
 connectDB();
 app.use((req, res, next) => {
+
   console.log(`INCOMING REQUEST: ${req.method} ${req.originalUrl}`);
   next();
 });
