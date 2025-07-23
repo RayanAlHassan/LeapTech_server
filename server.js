@@ -45,6 +45,9 @@ app.use('/contact', ContactRouter);
 app.use('/services', ServiceRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/career', CareerRoute);
+app.get("/", (req, res) => {
+  res.send("Backend is working");
+});
 // Start Server
 app.listen(PORT, () => {
 
