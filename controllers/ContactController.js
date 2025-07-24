@@ -26,12 +26,31 @@ export const createContact = async (req, res) => {
         to: process.env.ADMIN_EMAIL,
         subject: `New Contact Message: ${subject}`,
         html: `
-          <p><strong>Name:</strong> ${name}</p>
+        <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; color: #333;">
+          <h2 style="text-align: center; color: #19335d;">New Contact Message</h2>
+      
+          <hr style="margin: 20px 0;" />
+      
+          <h4>Contact Information</h4>
+          <p><strong>Full Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+      
+          <hr style="margin: 20px 0;" />
+      
+          <h4>Message Details</h4>
+          <p><strong>Subject:</strong> ${subject}</p>
           <p><strong>Message:</strong></p>
-          <p>${message}</p>
-        `
+          <p style="white-space: pre-line; line-height: 1.6;">${message}</p>
+      
+          <hr style="margin: 20px 0;" />
+      
+          <p style="font-size: 0.9rem; color: #888; text-align: center;">
+            Submitted on: ${new Date().toLocaleString()}
+          </p>
+        </div>
+      `
+      
       });
 
       // Email sent successfully
