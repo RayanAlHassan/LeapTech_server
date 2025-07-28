@@ -3,10 +3,10 @@ import nodemailer from 'nodemailer';
 
 export const createContact = async (req, res) => {
   try {
-    const { name, email, phone, subject, message } = req.body;
+    const { name, email,countryCode, phone, subject, message } = req.body;
 
     // Save contact message first
-    const contact = await ContactModel.create({ name, email, phone, subject, message });
+    const contact = await ContactModel.create({ name, email,countryCode, phone, subject, message });
 
     // Setup transporter
     const transporter = nodemailer.createTransport({
@@ -34,7 +34,7 @@ export const createContact = async (req, res) => {
           <h4>Contact Information</h4>
           <p><strong>Full Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
-          ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+          ${phone ? `<p><strong>Phone:</strong> ${countryCode} ${phone}</p>` : ''}
       
           <hr style="margin: 20px 0;" />
       
