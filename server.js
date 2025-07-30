@@ -9,8 +9,8 @@ import ConsultRoute from "./routes/ConsultRoute.js";
 import ContactRouter from './routes/ContactRoute.js';
 import CareerRoute from './routes/CareerRoute.js';
 import ServiceRouter from './routes/ServicesRoute.js';
-
-
+import chatbot from './routes/ChatBotRoute.js'
+import quotation from "./routes/serviceQuotationRoute.js"
 dotenv.config();
 
 const app = express();
@@ -47,6 +47,9 @@ app.use('/contact', ContactRouter);
 app.use('/services', ServiceRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/career', CareerRoute);
+app.use("/chatbot",chatbot ); 
+app.use('/quotation',quotation );
+
 app.get("/", (req, res) => {
   res.send("Backend is working");
 });
