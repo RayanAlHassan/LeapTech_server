@@ -142,7 +142,7 @@ export const getAllConsults = async (req, res) => {
         .sort({ createdAt: -1 }) // Newest first
         .skip(skip)
         .limit(limit),
-      Consult.countDocuments(),
+        ConsultModel.countDocuments(),
     ]);
 
     return res.status(200).json({

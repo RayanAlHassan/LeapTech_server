@@ -10,14 +10,14 @@ import {
   getApplicationById,
 } from '../controllers/CareerController.js';
 import { auth, authorize } from '../middelwear/auth.js';
-import upload from '../middelwear/multer.js';
+import { uploadCV } from '../middelwear/multer.js';
 
 const CareerRoute = express.Router();
 
 CareerRoute.get('/', getAllCareers);
 
 // Apply route with multer middleware to handle file upload from form field 'cv'
-CareerRoute.post('/apply', upload.single('cvUrl'), apply);
+CareerRoute.post('/apply', uploadCV.single('cvUrl'), apply);
 
 // Admin routes
 CareerRoute.post('/', auth, authorize('admin'), createCareer);

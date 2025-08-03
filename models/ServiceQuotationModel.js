@@ -12,7 +12,7 @@ const ServiceQuotationModel = new mongoose.Schema(
     expectedDate: { type: Date },
     contactMethod: {
       type: String,
-      enum: ["Email", "Phone", "Visit the company"],
+      enum: ["Email", "Phone", "Visit company"],
       default: "Email",
     },
     service: {

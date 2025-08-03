@@ -11,6 +11,10 @@ import CareerRoute from './routes/CareerRoute.js';
 import ServiceRouter from './routes/ServicesRoute.js';
 import chatbot from './routes/ChatBotRoute.js'
 import quotation from "./routes/serviceQuotationRoute.js"
+import category from "./routes/CategoriesRoute.js"
+import  path  from "path";
+
+// Handle multipart/form-data before JSON
 dotenv.config();
 
 const app = express();
@@ -24,6 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 // Middleware
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
@@ -46,9 +51,12 @@ app.use("/consult", ConsultRoute);
 app.use('/contact', ContactRouter);
 app.use('/services', ServiceRouter);
 app.use('/uploads', express.static('uploads'));
+app.use('/uploads/images', express.static(path.join(process.cwd(), 'Uploads/images')));
+
 app.use('/career', CareerRoute);
 app.use("/chatbot",chatbot ); 
 app.use('/quotation',quotation );
+app.use('/category',category );
 
 app.get("/", (req, res) => {
   res.send("Backend is working");

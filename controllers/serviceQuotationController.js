@@ -3,10 +3,12 @@ import ServiceQuotationModel from "../models/ServiceQuotationModel.js";
 // Create a new quotation
 export const createQuotation = async (req, res) => {
   try {
+    console.log("Received quotation data:", req.body);
     const newQuotation = new ServiceQuotationModel(req.body);
     const savedQuotation = await newQuotation.save();
     res.status(201).json(savedQuotation);
   } catch (err) {
+    console.error("Error creating quotation:", err);
     res.status(500).json({ error: "Failed to submit quotation", details: err.message });
   }
 };
@@ -14,7 +16,7 @@ export const createQuotation = async (req, res) => {
 // Get all quotations
 export const getAllQuotations = async (req, res) => {
   try {
-    const quotations = await ServiceQuotationModel.find().populate("service");
+    const quotations = await ServiceQuotationModel.find().populate("service").sort({ createdAt: -1 });
     res.status(200).json(quotations);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch quotations", details: err.message });
