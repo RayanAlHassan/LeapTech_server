@@ -46,9 +46,10 @@ app.use(cors({
 app.use(express.static("Public"));
 
 // Routes
+app.use('/api/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-app.use('/api/uploads', express.static('uploads'));
-app.use('/api/uploads/images', express.static(path.join(process.cwd(), 'Uploads/images')));
+// app.use('/api/uploads', express.static('uploads'));
+// app.use('/api/uploads/images', express.static(path.join(process.cwd(), 'Uploads/images')));
 
 app.use("/api/user", UserRouter);
 app.use("/api/consult", ConsultRoute);
