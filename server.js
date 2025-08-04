@@ -46,17 +46,18 @@ app.use(cors({
 app.use(express.static("Public"));
 
 // Routes
-app.use("/user", UserRouter);
-app.use("/consult", ConsultRoute);
-app.use('/contact', ContactRouter);
-app.use('/services', ServiceRouter);
-app.use('/uploads', express.static('uploads'));
-app.use('/uploads/images', express.static(path.join(process.cwd(), 'Uploads/images')));
 
-app.use('/career', CareerRoute);
-app.use("/chatbot",chatbot ); 
-app.use('/quotation',quotation );
-app.use('/category',category );
+app.use('/api/uploads', express.static('uploads'));
+app.use('/api/uploads/images', express.static(path.join(process.cwd(), 'Uploads/images')));
+
+app.use("/api/user", UserRouter);
+app.use("/api/consult", ConsultRoute);
+app.use('/api/contact', ContactRouter);
+app.use('/api/services', ServiceRouter);
+app.use('/api/career', CareerRoute);
+app.use('/api/chatbot', chatbot); 
+app.use('/api/quotation', quotation);
+app.use('/api/category', category);
 
 app.get("/", (req, res) => {
   res.send("Backend is working");
