@@ -25,7 +25,7 @@ export const handleChatMessage = (req, res) => {
   if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
     reply = "👋 Hello! How can I assist you today? You can ask about our services, pricing, or how to get in touch.";
   } 
-  else if (msg.includes("service") || msg.includes("services") || msg.includes("offer") || msg.includes("what can you do") )  {
+  else if (msg.includes("Services")||msg.includes("Service") ||msg.includes("service") || msg.includes("services") || msg.includes("offer") || msg.includes("what can you do") )  {
     reply = `Here are the services we offer:<br/>${servicesList}<br/><br/>Want more details about any of them?`;
   } 
   else if (msg.includes("price") || msg.includes("cost") || msg.includes("quote") || msg.includes("how much")) {
