@@ -25,13 +25,13 @@ export const handleChatMessage = (req, res) => {
   if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
     reply = "👋 Hello! How can I assist you today? You can ask about our services, pricing, or how to get in touch.";
   } 
-  else if (msg.includes("Services")||msg.includes("Service") ||msg.includes("service") || msg.includes("services") || msg.includes("offer") || msg.includes("what can you do") )  {
+  else if (msg.includes("Services")||msg.includes("Service") ||msg.includes("service") || msg.includes("services") || msg.includes("offer") ||  msg.includes("Offer") ||  msg.includes("what can you do") )  {
     reply = `Here are the services we offer:<br/>${servicesList}<br/><br/>Want more details about any of them?`;
   } 
-  else if (msg.includes("price") || msg.includes("cost") || msg.includes("quote") || msg.includes("how much")) {
+  else if (msg.includes("price") || msg.includes("cost") || msg.includes("quote") || msg.includes("How much") || msg.includes("Cost") || msg.includes("Price")) {
     reply = `💰 Prices depend on project scope. Please reach us via our ${contactLink} for a quote.`;
   } 
-  else if (msg.includes("contact") || msg.includes("reach you") || msg.includes("email") || msg.includes("phone")) {
+  else if (msg.includes("contact") ||msg.includes("Contact")|| msg.includes("reach you") || msg.includes("email") || msg.includes("phone")) {
     reply = `📞 You can reach us here: ${contactLink}<br/>Or message us directly on ${whatsappLink}.`;
   } 
   else if (
