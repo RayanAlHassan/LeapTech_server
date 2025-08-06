@@ -54,11 +54,13 @@ export const handleChatMessage = (req, res) => {
 
   const msg = message.toLowerCase().trim();
 
-  const contactLink = `<a href="https://leaptechkw.com/ContactUs" target="_blank">Contact Us</a>`;
+  // const contactLink = `<a href="https://leaptechkw.com/ContactUs" target="_blank">Contact Us</a>`;
   const whatsappLink = `<a href="https://wa.me/96525713432" target="_blank">WhatsApp us</a>`;
   const consultLink = `<a href="/#consult-us"target="_blank">Consult Us</a>`;
   const quoteLink = `<a href="https://leaptechkw.com/services" target="_blank">Request a Quotation</a>`;
   const careerLink = `<a href="https://leaptechkw.com/career" target="_blank">Career Opportunities</a>`;
+
+  const contactLink = `<a href="tel:+96525713432">Contact Us</a>`;
 
   const servicesList = [
     "• 🏠 Smart Home",
