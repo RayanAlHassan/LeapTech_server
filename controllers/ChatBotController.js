@@ -1,50 +1,3 @@
-
-// export const handleChatMessage = (req, res) => {
-//   const { message } = req.body;
-
-//   if (!message) {
-//     return res.status(400).json({ reply: "Message is required." });
-//   }
-
-//   const msg = message.toLowerCase().trim();
-//   let reply = `❓ Sorry, I didn’t quite catch that. If it’s urgent, feel free to <a href="https://wa.me/96171234567" target="_blank">WhatsApp us</a>.`;
-
-//   const contactLink = `<a href="https://leaptechkw.com/ContactUs" target="_blank">Contact Us</a>`;
-//   const whatsappLink = `<a href="https://wa.me/96525713432" target="_blank">WhatsApp us</a>`;
-
-//   const servicesList = [
-//     "• 🏠 Smart Home",
-//     "• ☁️ Cloud Storage",
-//     "• 🌐 Web Development",
-//     "• 📱 Mobile App Development",
-//     "• 📣 Digital Marketing",
-//     "• 🛍️ E-Business Solutions"
-//   ].join("<br/>");
-
-//   // Main chatbot logic
-//   if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
-//     reply = "👋 Hello! How can I assist you today? You can ask about our services, pricing, or how to get in touch.";
-//   } 
-//   else if (msg.includes("Services")||msg.includes("Service") ||msg.includes("service") || msg.includes("services") || msg.includes("offer") ||  msg.includes("Offer") ||  msg.includes("what can you do") )  {
-//     reply = `Here are the services we offer:<br/>${servicesList}<br/><br/>Want more details about any of them?`;
-//   } 
-//   else if (msg.includes("price") || msg.includes("cost") || msg.includes("quote") || msg.includes("How much") || msg.includes("Cost") || msg.includes("Price")) {
-//     reply = `💰 Prices depend on project scope. Please reach us via our ${contactLink} for a quote.`;
-//   } 
-//   else if (msg.includes("contact") ||msg.includes("Contact")|| msg.includes("reach you") || msg.includes("email") || msg.includes("phone")) {
-//     reply = `📞 You can reach us here: ${contactLink}<br/>Or message us directly on ${whatsappLink}.`;
-//   } 
-//   else if (
-//     (msg.includes("services") && msg.includes("prices")) ||
-//     (msg.includes("service") && msg.includes("price")) ||
-//     (msg.includes("cost") && msg.includes("contact")) ||
-//     msg.split(" ").length > 20 // long/complex message
-//   ) {
-//     reply = `🤖 That sounds like a detailed request! For faster help, ${whatsappLink} or use our ${contactLink}.`;
-//   }
-
-//   res.json({ reply });
-// };
 export const handleChatMessage = (req, res) => {
   const { message } = req.body;
 
@@ -54,23 +7,62 @@ export const handleChatMessage = (req, res) => {
 
   const msg = message.toLowerCase().trim();
 
-  // const contactLink = `<a href="https://leaptechkw.com/ContactUs" target="_blank">Contact Us</a>`;
   const whatsappLink = `<a href="https://wa.me/96525713432" target="_blank">WhatsApp us</a>`;
-  const consultLink = `<a href="/#consult-us"target="_blank">Consult Us</a>`;
+  const consultLink = `<a href="/#consult-us" target="_blank">Consult Us</a>`;
   const quoteLink = `<a href="https://leaptechkw.com/services" target="_blank">Request a Quotation</a>`;
   const careerLink = `<a href="https://leaptechkw.com/career" target="_blank">Career Opportunities</a>`;
-
   const contactLink = `<a href="tel:+96525713432">Contact Us</a>`;
+  const servicesPageLink = `<a href="https://leaptechkw.com/services" target="_blank">our Services page</a>`;
 
-  const servicesList = [
-    "• 🏠 Smart Home",
-    "• ☁️ Cloud Storage",
-    "• 🌐 Web Development",
-    "• 📱 Mobile App Development",
-    "• 📣 Digital Marketing",
-    "• 🛍️ E-Business Solutions"
-  ].join("<br/>");
+  const services = [
+    {
+      title: "smart home",
+      description: `We offer cutting-edge Smart Home solutions to automate your security, lighting, and climate control, making your home safer and more comfortable. Discover all the possibilities on ${servicesPageLink}.`
+    },
+    {
+      title: "cloud storage",
+      description: `Our Cloud Storage services provide secure, scalable, and reliable data access anytime, anywhere, empowering your business with flexibility and peace of mind. Learn more on ${servicesPageLink}.`
+    },
+    {
+      title: "web development",
+      description: `Get a professional website or e-commerce platform tailored to your brand, designed to engage customers and grow your online presence. Explore details on ${servicesPageLink}.`
+    },
+    {
+      title: "mobile app development",
+      description: `We build robust and user-friendly mobile applications for both iOS and Android platforms to help you connect with your audience on the go. Visit ${servicesPageLink} for more info.`
+    },
+    {
+      title: "digital marketing",
+      description: `Boost your business growth with our targeted digital marketing strategies, including SEO, social media, and data-driven campaigns. Check out all offerings at ${servicesPageLink}.`
+    },
+    {
+      title: "e-business solutions",
+      description: `Our E-Business Solutions help enhance your online brand visibility and engagement through tailored digital strategies. Find out more on ${servicesPageLink}.`
+    }
+  ];
 
+  // Format list for general services
+  const servicesList = services
+    .map(s => `• ${capitalizeWords(s.title)}`)
+    .join("<br/>");
+
+  function capitalizeWords(str) {
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  // Check if user asked about a specific service to reply with description + link
+  for (const service of services) {
+    if (msg.includes(service.title)) {
+      return res.json({
+        reply: `💼 <strong>${capitalizeWords(service.title)}</strong>: ${service.description}`
+      });
+    }
+  }
+
+  // Default chatbot logic (same as before)
   let reply = `👋 Welcome to Leap Tech! We're excited to help you.<br/><br/>
 Here are some of the services we offer:<br/>${servicesList}<br/><br/>
 You can ask about:<br/>
@@ -82,49 +74,42 @@ You can ask about:<br/>
 • 🛠️ Help with a problem or support<br/><br/>
 Ask me anything below 👇`;
 
-  // Greeting keywords
-  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey") || msg.includes("start") || msg.includes("begin")) {
-    // keep reply as is (it's already the welcome message)
-  }
-
-  // Services
-  else if (
-    msg.includes("services") || 
-    msg.includes("service") || 
-    msg.includes("offer") || 
-    msg.includes("what can you do") || 
+  if (
+    msg.includes("hello") ||
+    msg.includes("hi") ||
+    msg.includes("hey") ||
+    msg.includes("start") ||
+    msg.includes("begin")
+  ) {
+    // keep reply as welcome message
+  } else if (
+    msg.includes("services") ||
+    msg.includes("service") ||
+    msg.includes("offer") ||
+    msg.includes("what can you do") ||
     msg.includes("solutions")
   ) {
     reply = `💼 Here are the services we offer:<br/>${servicesList}<br/><br/>Want more details about any of them?`;
-  }
-
-  // Consult Us
-  else if (
-    msg.includes("consult") || 
-    msg.includes("consultation") || 
-    msg.includes("discuss project") || 
-    msg.includes("idea") || 
+  } else if (
+    msg.includes("consult") ||
+    msg.includes("consultation") ||
+    msg.includes("discuss project") ||
+    msg.includes("idea") ||
     msg.includes("need help with a project")
   ) {
     reply = `🧠 You can ${consultLink} to consult with our team about your project — no budget or time estimate needed.`;
-  }
-
-  // Request Quotation / Budget / Estimate
-  else if (
-    msg.includes("quotation") || 
-    msg.includes("quote") || 
-    msg.includes("budget") || 
-    msg.includes("estimate") || 
-    msg.includes("how much") || 
-    msg.includes("pricing") || 
-    msg.includes("price") || 
+  } else if (
+    msg.includes("quotation") ||
+    msg.includes("quote") ||
+    msg.includes("budget") ||
+    msg.includes("estimate") ||
+    msg.includes("how much") ||
+    msg.includes("pricing") ||
+    msg.includes("price") ||
     msg.includes("cost")
   ) {
     reply = `💰 To get a budget, timeline, and full estimate for your project, please ${quoteLink}.`;
-  }
-
-  // Contact
-  else if (
+  } else if (
     msg.includes("contact") ||
     msg.includes("email") ||
     msg.includes("phone") ||
@@ -133,42 +118,30 @@ Ask me anything below 👇`;
     msg.includes("talk to you")
   ) {
     reply = `📞 You can reach us here: ${contactLink}<br/>Or message us directly on ${whatsappLink}.`;
-  }
-
-  // Job/Career
-  else if (
-    msg.includes("job") || 
-    msg.includes("career") || 
-    msg.includes("vacancy") || 
-    msg.includes("work with you") || 
+  } else if (
+    msg.includes("job") ||
+    msg.includes("career") ||
+    msg.includes("vacancy") ||
+    msg.includes("work with you") ||
     msg.includes("hiring")
   ) {
     reply = `👨‍💻 We're always open to talented individuals! Check out our ${careerLink} page for openings.`;
-  }
-
-  // Technical support
-  else if (
-    msg.includes("support") || 
-    msg.includes("problem") || 
-    msg.includes("issue") || 
-    msg.includes("bug") || 
+  } else if (
+    msg.includes("support") ||
+    msg.includes("problem") ||
+    msg.includes("issue") ||
+    msg.includes("bug") ||
     msg.includes("help me")
   ) {
     reply = `🛠️ We're here to help! Please reach out via ${whatsappLink} and describe your issue, for faster support.`;
-  }
-
-  // Complex or mixed input
-  else if (
+  } else if (
     (msg.includes("services") && msg.includes("prices")) ||
     (msg.includes("service") && msg.includes("quote")) ||
     (msg.includes("cost") && msg.includes("contact")) ||
     msg.split(" ").length > 20
   ) {
     reply = `🤖 That sounds like a detailed request! For faster help, feel free to ${whatsappLink} or use our ${contactLink}.`;
-  }
-
-  // No match / fallback
-  else {
+  } else {
     reply = `❓ I didn’t quite catch that. You can ask about:<br/>
 • Our services<br/>
 • Consultation or quotation<br/>
