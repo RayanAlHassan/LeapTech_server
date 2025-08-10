@@ -193,7 +193,13 @@ export const handleChatMessage = (req, res) => {
     {
       title: "E-Business",
       description: `Our E-Business Solutions help enhance your online brand visibility and engagement through tailored digital strategies. Find out more on ${servicesPageLink}.`
-    }
+    },
+    {
+      title: "FinTech",
+      description: `Transform your financial operations with our innovative FinTech solutions, offering secure transactions, smart analytics, and scalable platforms for modern businesses. Learn more on ${servicesPageLink}.`
+    },
+ 
+    
   ];
 
   // Capitalize words utility
