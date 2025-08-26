@@ -132,7 +132,7 @@ export const createService = async (req, res) => {
 // Get all services (with category info)
 export const getAllServices = async (req, res) => {
   try {
-    const services = await ServiceModel.find().populate('category', 'title').sort({ createdAt: 1 });
+    const services = await ServiceModel.find().populate('category', 'title, description').sort({ createdAt: 1 });
     res.json(services);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching services', error: error.message });

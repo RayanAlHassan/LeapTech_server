@@ -8,6 +8,7 @@ import {
   apply,
   getApplications,
   getApplicationById,
+  deleteCareerById,
 } from '../controllers/CareerController.js';
 import { auth, authorize } from '../middelwear/auth.js';
 import { uploadCV } from '../middelwear/multer.js';
@@ -25,5 +26,9 @@ CareerRoute.post('/', auth, authorize('admin'), createCareer);
 CareerRoute.get('/applications', auth, authorize('admin'), getApplications);
 CareerRoute.get('/applications/:id', auth, authorize('admin'), getApplicationById);
 CareerRoute.get('/:id', getCareerById);
+
+
+// Delete career (admin only)
+CareerRoute.delete('/:id', auth, authorize('admin'), deleteCareerById);
 
 export default CareerRoute;
