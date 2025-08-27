@@ -78,9 +78,9 @@
 //     res.status(500).json({ message: 'Error deleting service', error: error.message });
 //   }
 // };
-import ServiceModel from '../models/ServicesModel.js';
-import CategoryModel from '../models/CategoryModel.js';
-import fs from 'fs';
+import ServiceModel from "../models/ServicesModel.js";
+import CategoryModel from "../models/CategoryModel.js";
+import fs from "fs";
 
 // Create Service with image handling
 export const createService = async (req, res) => {
@@ -88,7 +88,7 @@ export const createService = async (req, res) => {
     const categoryId = req.body?.categoryId;
     const title = req.body?.title;
     const description = req.body?.description;
-    
+
     if (!categoryId || !title || !description) {
       if (req.file) {
         const path = `uploads/images/${req.file.filename}`;
@@ -107,7 +107,7 @@ export const createService = async (req, res) => {
         const path = `uploads/images/${req.file.filename}`;
         fs.unlinkSync(path);
       }
-      return res.status(404).json({ message: 'Category not found' });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const image = req.file.filename;
@@ -125,17 +125,23 @@ export const createService = async (req, res) => {
       const path = `uploads/images/${req.file.filename}`;
       fs.unlinkSync(path);
     }
-    res.status(500).json({ message: 'Error creating service', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating service", error: error.message });
   }
 };
 
 // Get all services (with category info)
 export const getAllServices = async (req, res) => {
   try {
-    const services = await ServiceModel.find().populate('category', 'title, description').sort({ createdAt: 1 });
+    const services = await ServiceModel.find()
+      .populate("category", "title description")
+      .sort({ createdAt: 1 });
     res.json(services);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching services', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching services", error: error.message });
   }
 };
 
@@ -144,28 +150,37 @@ export const getServicesByCategory = async (req, res) => {
   try {
     const { categoryTitle } = req.params;
     const category = await CategoryModel.findOne({ title: categoryTitle });
-    if (!category) return res.status(404).json({ message: 'Category not found' });
+    if (!category)
+      return res.status(404).json({ message: "Category not found" });
 
     const services = await ServiceModel.find({ category: category._id });
     res.json(services);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching services by category', error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error fetching services by category",
+        error: error.message,
+      });
   }
 };
 
 // Get single service
 export const getServiceById = async (req, res) => {
   try {
-    const service = await ServiceModel.findById(req.params.id).populate('category');
-    if (!service) return res.status(404).json({ message: 'Service not found' });
+    const service = await ServiceModel.findById(req.params.id).populate(
+      "category"
+    );
+    if (!service) return res.status(404).json({ message: "Service not found" });
     res.json(service);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching service', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching service", error: error.message });
   }
 };
 
 // Update service with image replacement & old image deletion
-
 
 export const updateService = async (req, res) => {
   try {
@@ -178,7 +193,7 @@ export const updateService = async (req, res) => {
         const path = `uploads/images/${req.file.filename}`;
         fs.unlinkSync(path);
       }
-      return res.status(404).json({ message: 'Service not found' });
+      return res.status(404).json({ message: "Service not found" });
     }
 
     // Update only provided fields
@@ -204,7 +219,9 @@ export const updateService = async (req, res) => {
       const path = `uploads/images/${req.file.filename}`;
       fs.unlinkSync(path);
     }
-    res.status(500).json({ message: 'Error updating service', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating service", error: error.message });
   }
 };
 
@@ -212,7 +229,7 @@ export const updateService = async (req, res) => {
 export const deleteService = async (req, res) => {
   try {
     const service = await ServiceModel.findById(req.params.id);
-    if (!service) return res.status(404).json({ message: 'Service not found' });
+    if (!service) return res.status(404).json({ message: "Service not found" });
 
     const imagePath = `uploads/images/${service.image}`;
     try {
@@ -220,14 +237,16 @@ export const deleteService = async (req, res) => {
         fs.unlinkSync(imagePath);
       }
     } catch (err) {
-      console.error('Error deleting service image:', err);
-      return res.status(500).json({ message: 'Error deleting service image' });
+      console.error("Error deleting service image:", err);
+      return res.status(500).json({ message: "Error deleting service image" });
     }
 
     await ServiceModel.deleteOne({ _id: req.params.id });
 
-    res.json({ message: 'Service deleted successfully' });
+    res.json({ message: "Service deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting service', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting service", error: error.message });
   }
 };
