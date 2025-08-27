@@ -13,6 +13,7 @@ import chatbot from './routes/ChatBotRoute.js'
 import quotation from "./routes/serviceQuotationRoute.js"
 import category from "./routes/CategoriesRoute.js"
 import  path  from "path";
+import project from "./routes/ProjectRoute.js";
 
 // Handle multipart/form-data before JSON
 dotenv.config();
@@ -59,6 +60,7 @@ app.use('/api/career', CareerRoute);
 app.use('/api/chatbot', chatbot); 
 app.use('/api/quotation', quotation);
 app.use('/api/category', category);
+app.use("/api/projects", project);
 
 app.get("/", (req, res) => {
   res.send("Backend is working");
