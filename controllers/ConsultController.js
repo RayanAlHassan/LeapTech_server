@@ -63,7 +63,7 @@ export const submitConsult = async (req, res) => {
     try {
       await transporter.sendMail({
         from: process.env.ADMIN_EMAIL,      // always the authenticated account
-        to: process.env.EMAIL_TO, // or ADMIN_EMAIL if you want same inbox
+        to:"career@leaptechkw.com", // or ADMIN_EMAIL if you want same inbox
         replyTo: email,                     // applicant’s real email
         subject: `New Consultation Request`,
         html: `
