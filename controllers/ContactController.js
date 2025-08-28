@@ -1,29 +1,37 @@
-import ContactModel from '../models/ContactModel.js';
-import nodemailer from 'nodemailer';
+import ContactModel from "../models/ContactModel.js";
+import nodemailer from "nodemailer";
 
 export const createContact = async (req, res) => {
   try {
-    const { name, email,countryCode, phone, subject, message } = req.body;
+    const { name, email, countryCode, phone, subject, message } = req.body;
 
     // Save contact message first
-    const contact = await ContactModel.create({ name, email,countryCode, phone, subject, message });
+    const contact = await ContactModel.create({
+      name,
+      email,
+      countryCode,
+      phone,
+      subject,
+      message,
+    });
 
     // Setup transporter
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
-      secure: process.env.EMAIL_SECURE === 'true',
+      secure: process.env.EMAIL_SECURE === "true",
       auth: {
         user: process.env.ADMIN_EMAIL,
         pass: process.env.EMAIL_PASSWORD,
-      }
+      },
     });
 
     // Try sending the email
     try {
       await transporter.sendMail({
-        from: email,
-        to: process.env.ADMIN_EMAIL,
+        from: process.env.ADMIN_EMAIL, // always the authenticated account
+        to: process.env.EMAIL_TO, // or ADMIN_EMAIL if you want same inbox
+        replyTo: email, // applicant’s real email
         subject: `New Contact Message: ${subject}`,
         html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; color: #333;">
@@ -34,7 +42,11 @@ export const createContact = async (req, res) => {
           <h4>Contact Information</h4>
           <p><strong>Full Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
-          ${phone ? `<p><strong>Phone:</strong> ${countryCode} ${phone}</p>` : ''}
+          ${
+            phone
+              ? `<p><strong>Phone:</strong> ${countryCode} ${phone}</p>`
+              : ""
+          }
       
           <hr style="margin: 20px 0;" />
       
@@ -49,29 +61,29 @@ export const createContact = async (req, res) => {
             Submitted on: ${new Date().toLocaleString()}
           </p>
         </div>
-      `
-      
+      `,
       });
 
       // Email sent successfully
-      return res.status(201).json({ message: 'Contact message received and email sent', contact });
+      return res
+        .status(201)
+        .json({ message: "Contact message received and email sent", contact });
     } catch (emailError) {
-      console.error('Email sending failed:', emailError);
+      console.error("Email sending failed:", emailError);
 
       // Email failed but contact saved
       return res.status(201).json({
-        message: 'Contact message received but failed to send notification email',
+        message:
+          "Contact message received but failed to send notification email",
         contact,
-        emailError: emailError.message
+        emailError: emailError.message,
       });
     }
-
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
 
 export const getAllContacts = async (req, res) => {
   try {
@@ -90,19 +102,19 @@ export const getAllContacts = async (req, res) => {
       total,
       page,
       pages: Math.ceil(total / limit),
-      contacts
+      contacts,
     });
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching contact messages' });
+    res.status(500).json({ message: "Error fetching contact messages" });
   }
 };
 
 export const getContactById = async (req, res) => {
   try {
     const contact = await ContactModel.findById(req.params.id);
-    if (!contact) return res.status(404).json({ message: 'Contact not found' });
+    if (!contact) return res.status(404).json({ message: "Contact not found" });
     res.json(contact);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching contact' });
+    res.status(500).json({ message: "Error fetching contact" });
   }
 };

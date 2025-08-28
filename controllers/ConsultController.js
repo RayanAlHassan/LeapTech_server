@@ -62,8 +62,9 @@ export const submitConsult = async (req, res) => {
     // Send email
     try {
       await transporter.sendMail({
-        from: email,
-        to: process.env.ADMIN_EMAIL,
+        from: process.env.ADMIN_EMAIL,      // always the authenticated account
+        to: process.env.EMAIL_TO, // or ADMIN_EMAIL if you want same inbox
+        replyTo: email,                     // applicant’s real email
         subject: `New Consultation Request`,
         html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; color: #333;">

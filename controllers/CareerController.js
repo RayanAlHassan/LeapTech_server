@@ -165,8 +165,9 @@ export const apply = async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: email,
-      to: process.env.ADMIN_EMAIL,
+      from: process.env.ADMIN_EMAIL,      // always the authenticated account
+      to: process.env.EMAIL_TO, // or ADMIN_EMAIL if you want same inbox
+      replyTo: email,                     // applicant’s real email
       subject: `New Job Application: ${jobTitle}`,
       html: emailHtml,
       attachments: [
