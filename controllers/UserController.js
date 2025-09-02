@@ -36,7 +36,7 @@ export const login = async (req, res) => {
       const { email, password } = req.body;
   
       const user = await UserSchema.findOne({ email });
-      if (!user) return res.status(401).json({ message: 'Email Already Exist' });
+      if (!user) return res.status(401).json({ message: 'Email not found' });
   
       const match = await user.comparePassword(password);
       if (!match) return res.status(401).json({ message: 'Incorrect Password' });
